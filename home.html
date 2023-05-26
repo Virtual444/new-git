@@ -80,6 +80,12 @@
             var userDataLine = document.createElement("p");
             userDataLine.innerText = user.name + " - " + user.email + " - " + user.phone;
 
+            var editButton = document.createElement("button");
+            editButton.innerText = "Edit";
+            editButton.addEventListener("click", function() {
+              editUserData(index);
+            });
+
             var deleteButton = document.createElement("button");
             deleteButton.innerText = "Delete";
             deleteButton.addEventListener("click", function() {
@@ -87,11 +93,35 @@
             });
 
             userDiv.appendChild(userDataLine);
+            userDiv.appendChild(editButton);
             userDiv.appendChild(deleteButton);
 
             userDataContainer.appendChild(userDiv);
           });
         }
+      }
+
+      // Function to edit user data
+      function editUserData(index) {
+        // Retrieve user data from local storage
+        var userData = JSON.parse(localStorage.getItem("userData"));
+
+        // Retrieve the user data at the specified index
+        var user = userData[index];
+
+        // Populate the form input fields with the user data for editing
+        document.getElementById("name").value = user.name;
+        document.getElementById("email").value = user.email;
+        document.getElementById("phone").value = user.phone;
+
+        // Remove the user data from the array
+        userData.splice(index, 1);
+
+        // Update the user data in local storage
+        localStorage.setItem("userData", JSON.stringify(userData));
+
+        // Display the updated user data
+        displayUserData();
       }
 
       // Function to delete user data
@@ -105,7 +135,7 @@
         // Update the user data in local storage
         localStorage.setItem("userData", JSON.stringify(userData));
 
-        // Refresh the displayed user data
+        // Display the updated user data
         displayUserData();
       }
     });
