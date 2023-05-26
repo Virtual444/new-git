@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Registration Page</title>
+</head>
+<body>
+  <div class="container">
+    <div class="form-box">
+      <h1 class="heading">Fill the details</h1>
+      <hr>
+      <form id="myForm">
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone Number:</label>
+          <input type="tel" id="phone" name="phone" required>
+        </div>
+        
+        <button type="submit">Register</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="userDataContainer" class="container">
+    <h1 class="heading">User Data</h1>
+    <hr>
+  </div>
+
+  <script>
+    document.getElementById("myForm").addEventListener("submit", function(event) {
+      event.preventDefault(); // Prevent form submission
+
+      // Retrieve form input values
+      var name = document.getElementById("name").value;
+      var email = document.getElementById("email").value;
+      var phone = document.getElementById("phone").value;
+
+      // Create an object to hold the user data
+      var userData = {
+        name: name,
+        email: email,
+        phone: phone
+      };
+
+      // Retrieve existing user data from local storage or initialize an empty array
+      var existingData = JSON.parse(localStorage.getItem("userData")) || [];
+
+      // Add the new user data to the existing array
+      existingData.push(userData);
+
+      // Store the updated user data in local storage
+      localStorage.setItem("userData", JSON.stringify(existingData));
+
+      // Clear the form inputs
+      document.getElementById("myForm").reset();
+
+      // Display the user data immediately
+      displayUserData();
+
+      // Function to display the user data
+      function displayUserData() {
+        var userDataContainer = document.getElementById("userDataContainer");
+        userDataContainer.innerHTML = ""; // Clear previous data
+
+        // Retrieve user data from local storage
+        var userData = JSON.parse(localStorage.getItem("userData"));
+
+        if (userData && userData.length > 0) {
+          // Iterate over each user data object
+          userData.forEach(function(user, index) {
+            var userDiv = document.createElement("div");
+            userDiv.classList.add("user-data");
+
+            var userDataLine = document.createElement("p");
+            userDataLine.innerText = user.name + " - " + user.email + " - " + user.phone;
+
+            var deleteButton = document.createElement("button");
+            deleteButton.innerText = "Delete";
+            deleteButton.addEventListener("click", function() {
+              deleteUserData(index);
+            });
+
+            userDiv.appendChild(userDataLine);
+            userDiv.appendChild(deleteButton);
+
+            userDataContainer.appendChild(userDiv);
+          });
+        }
+      }
+
+      // Function to delete user data
+      function deleteUserData(index) {
+        // Retrieve user data from local storage
+        var userData = JSON.parse(localStorage.getItem("userData"));
+
+        // Remove the user data at the specified index
+        userData.splice(index, 1);
+
+        // Update the user data in local storage
+        localStorage.setItem("userData", JSON.stringify(userData));
+
+        // Refresh the displayed user data
+        displayUserData();
+      }
+    });
+  </script>
+</body>
+</html>
