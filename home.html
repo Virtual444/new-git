@@ -22,123 +22,16 @@
           <input type="tel" id="phone" name="phone" required>
         </div>
         
-        <button type="submit">Register</button>
+        <button type="submit" onclick=addUser()>Register</button>
       </form>
     </div>
   </div>
 
   <div id="userDataContainer" class="container">
-    <h1 class="heading">User Data</h1>
+   <ul id="data"><h1 class="heading">User Data</h1></ul> 
     <hr>
   </div>
-
-  <script>
-    document.getElementById("myForm").addEventListener("submit", function(event) {
-      event.preventDefault(); // Prevent form submission
-
-      // Retrieve form input values
-      var name = document.getElementById("name").value;
-      var email = document.getElementById("email").value;
-      var phone = document.getElementById("phone").value;
-
-      // Create an object to hold the user data
-      var userData = {
-        name: name,
-        email: email,
-        phone: phone
-      };
-
-      // Retrieve existing user data from local storage or initialize an empty array
-      var existingData = JSON.parse(localStorage.getItem("userData")) || [];
-
-      // Add the new user data to the existing array
-      existingData.push(userData);
-
-      // Store the updated user data in local storage
-      localStorage.setItem("userData", JSON.stringify(existingData));
-
-      // Clear the form inputs
-      document.getElementById("myForm").reset();
-
-      // Display the user data immediately
-      displayUserData();
-
-      // Function to display the user data
-      function displayUserData() {
-        var userDataContainer = document.getElementById("userDataContainer");
-        userDataContainer.innerHTML = ""; // Clear previous data
-
-        // Retrieve user data from local storage
-        var userData = JSON.parse(localStorage.getItem("userData"));
-
-        if (userData && userData.length > 0) {
-          // Iterate over each user data object
-          userData.forEach(function(user, index) {
-            var userDiv = document.createElement("div");
-            userDiv.classList.add("user-data");
-
-            var userDataLine = document.createElement("p");
-            userDataLine.innerText = user.name + " - " + user.email + " - " + user.phone;
-
-            var editButton = document.createElement("button");
-            editButton.innerText = "Edit";
-            editButton.addEventListener("click", function() {
-              editUserData(index);
-            });
-
-            var deleteButton = document.createElement("button");
-            deleteButton.innerText = "Delete";
-            deleteButton.addEventListener("click", function() {
-              deleteUserData(index);
-            });
-
-            userDiv.appendChild(userDataLine);
-            userDiv.appendChild(editButton);
-            userDiv.appendChild(deleteButton);
-
-            userDataContainer.appendChild(userDiv);
-          });
-        }
-      }
-
-      // Function to edit user data
-      function editUserData(index) {
-        // Retrieve user data from local storage
-        var userData = JSON.parse(localStorage.getItem("userData"));
-
-        // Retrieve the user data at the specified index
-        var user = userData[index];
-
-        // Populate the form input fields with the user data for editing
-        document.getElementById("name").value = user.name;
-        document.getElementById("email").value = user.email;
-        document.getElementById("phone").value = user.phone;
-
-        // Remove the user data from the array
-        userData.splice(index, 1);
-
-        // Update the user data in local storage
-        localStorage.setItem("userData", JSON.stringify(userData));
-
-        // Display the updated user data
-        displayUserData();
-      }
-
-      // Function to delete user data
-      function deleteUserData(index) {
-        // Retrieve user data from local storage
-        var userData = JSON.parse(localStorage.getItem("userData"));
-
-        // Remove the user data at the specified index
-        userData.splice(index, 1);
-
-        // Update the user data in local storage
-        localStorage.setItem("userData", JSON.stringify(userData));
-
-        // Display the updated user data
-        displayUserData();
-      }
-    });
-  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+  <script src="main.js"></script>
 </body>
 </html>
