@@ -1,3 +1,4 @@
+console.log("BOOKING APPOINTMENT APP");
 document.addEventListener("DOMContentLoaded", () => {
     axios.get('https://crudcrud.com/api/521a558fd18041db9f89fc0255cdba72/appointmentData')
     .then(response => {
